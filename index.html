@@ -1,71 +1,101 @@
 <html>
 <head>
+    <script type="text/javascript" src="http://beneposto.pl/jqueryrotate/js/jQueryRotateCompressed.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript" src="//vk.com/js/api/openapi.js?120"></script>
 	<style>
+    @font-face {
+        font-family: Dos; /* Гарнитура шрифта */
+        src: url(font/dos.ttf);
+    }
 	html, body {
+        background: black;
 		width: 100%;
 		height: 100%;
 		margin: 0;
 		padding: 0;
 		overflow: hidden;
 	}
-	.test{
-		margin-left: 500px;
-		width: 200;
+	.test {
+        position: absolute;
+        font-size: 46;
+        font-family: Dos;
+        color: white;
+		width: 600;
 		height: 200;
+        margin-left: 40%;
 		display:none;
+        z-index: 3;
 	}
-	#vk_groups{
+    #bgvideo{
+        position: absolute;
+        opacity: 0.2;
+        width: 100%;
+		height: 100%;
+        z-index: 1;
+    }
+    #muffler {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+    }
+	#vk_groups {
+        opacity: 0.9;
+        position: absolute;
 		display: none;
-		width: 700;
-		height: 900;
-		margin-top: 10;
+		width: 600;
+		height: 800;
 		margin-left:auto;
     	margin-right:auto;
+        z-index: 4;
+        margin-top: 5%;
 	}
-	/*.button{
-		width: 150;
-		height: 100;
-		margin-left:auto;
-    	margin-right:auto;
-	}*/
 	button {
+        position: absolute;
 		width: 150;
 		height: 50;
-		margin-left: 45%;
-		font-weight: 700;
-		color: white;
+		margin-left: 14%;
+        margin-top: 1%;
+		font-weight: 800;
+	    color: white;
 		text-decoration: none;
 		padding: .8em 1em calc(.8em + 3px);
 		border-radius: 3px;
 		background: rgb(64,199,129);
 		box-shadow: 0 -3px rgb(53,167,110) inset;
 		transition: 0.2s;
-		} 
-	button:hover { background: rgb(53, 167, 110); }
+        z-index: 5;
+    }
+    button:focus {
+        outline: none;
+    }
+	button:hover {
+        background: rgb(53, 167, 110);
+    }
 	button:active {
+        position: absolute;
 		background: rgb(33,147,90);
 		box-shadow: 0 3px rgb(33,147,90) inset;
 	}
-	/*.test{
-		color: red;
-	}*/
-	</style>
+    </style>
 </head>
 <body>
-	<br>
+    <div id="muffler"></div>
+        <div id="bgvideo"><iframe width="100%" height="100%" src="http://www.youtube.com/embed/RDfjXj5EGqI?controls=0;showinfo=0;disablekb=0;iv_load_policy=3;wmode=transparent;autoplay=1;rel=0" frameborder="0" allowfullscreen></iframe></div>
 		<h1><span class="test">Hello</span></h1>
-		<button class="button">LentoRU(beta)</button>
+		<button class="button">LentoRU</button>
 	<br>
 		<div id="vk_groups"></div>
 </body>
 <!-- VK Widget -->
 	<script type="text/javascript">
-	VK.Widgets.Group("vk_groups", {mode: 2, wide: 1, width: "700", height: "700"}, 94909892);
+	VK.Widgets.Group("vk_groups", {mode: 2, wide: 1, width: "600", height: "800"}, 94909892);
 	</script>
 	<script>
-	var words = ["How are you?", "OK", "LOL", "What?", "Soon a new website", "Fallout 4", "Вилкой в глаз или в жопу раз?", ":D"];
+	var words = ["How are you?", "beautiful fireplace?", "OK", "LOL", "What?", "Soon a new website", "happy new year", "Fallout 4", "fire...", ":D"];
 		$test = $(".test");
 		
 	function getRandom(min, max) {
@@ -76,19 +106,18 @@
 		var num = getRandom(0, words.length - 1);
 		return words[num];
 	}
-	
+//AWOLNATION - run
 	function change () {
-		$test.fadeOut(2000, function () {
+		$test.fadeOut(3000, function () {
 		$test.text(getRandomWord());
-		$test.fadeIn(2000);
+		$test.fadeIn(3000);
 	});
-	setTimeout(change, 4000);
+	setTimeout(change, 6000);
 	}
-	//AWOLNATION - run
-		$(".button").click(function () {
-			$('#vk_groups').fadeIn(5000);
-		});
-		$test.html(getRandomWord());
-		change();
+    $(".button").click(function () {
+		$('#vk_groups').fadeToggle(4000);
+    });
+	$test.html(getRandomWord());
+	change();
 </script>
 </html>
