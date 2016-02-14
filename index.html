@@ -1,123 +1,108 @@
 <html>
 <head>
-    <script type="text/javascript" src="http://beneposto.pl/jqueryrotate/js/jQueryRotateCompressed.js"></script>
+    <meta charset="utf-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script type="text/javascript" src="//vk.com/js/api/openapi.js?120"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="jquery.spritely.js"></script>
 	<style>
     @font-face {
-        font-family: Dos; /* Гарнитура шрифта */
-        src: url(font/dos.ttf);
+        font-family: Hotline;
+        src: url(fonts/HM.ttf);
     }
 	html, body {
-        background: black;
+        background-color: #B26585;
 		width: 100%;
 		height: 100%;
 		margin: 0;
 		padding: 0;
 		overflow: hidden;
 	}
+    #bg_city{
+        background: transparent url(images/city.png) 0 0px repeat-x;
+    }
+    #bg_fon{
+        background: transparent url(images/palm.png) 0 104px repeat-x;
+    }
+    .fon{
+        position: absolute;
+        top: 20%;
+        left: -10%;
+        width: 120%;
+        height: 450px;
+        animation: fon 10s infinite ease-in-out;
+    }
+    .city{
+        position: absolute;
+        left: -10%;
+        width: 120%;
+        height: 450px;
+        animation: fon 10s infinite ease-in-out;
+    }
+    @keyframes fon {
+        33% { transform: rotate(2deg);}
+        
+        66% { transform: rotate(-2deg);}
+
+        99% { transform: rotate(0deg);}
+        
+    }
 	.test {
+        color: 	#6666FF;
         position: absolute;
-        font-size: 46;
-        font-family: Dos;
-        color: white;
-		width: 600;
-		height: 200;
-        margin-left: 40%;
-		display:none;
-        z-index: 3;
-	}
-    #bgvideo{
-        position: absolute;
-        opacity: 0.2;
-        width: 100%;
-		height: 100%;
-        z-index: 1;
-    }
-    #muffler {
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        z-index: 2;
-    }
-	#vk_groups {
-        opacity: 0.9;
-        position: absolute;
-		display: none;
-		width: 600;
-		height: 800;
-		margin-left:auto;
-    	margin-right:auto;
-        z-index: 4;
-        margin-top: 5%;
-	}
-	button {
-        position: absolute;
-		width: 150;
-		height: 50;
-		margin-left: 14%;
-        margin-top: 1%;
-		font-weight: 800;
-	    color: white;
-		text-decoration: none;
-		padding: .8em 1em calc(.8em + 3px);
-		border-radius: 3px;
-		background: rgb(64,199,129);
-		box-shadow: 0 -3px rgb(53,167,110) inset;
-		transition: 0.2s;
-        z-index: 5;
-    }
-    button:focus {
-        outline: none;
-    }
-	button:hover {
-        background: rgb(53, 167, 110);
-    }
-	button:active {
-        position: absolute;
-		background: rgb(33,147,90);
-		box-shadow: 0 3px rgb(33,147,90) inset;
+        letter-spacing: 15px;
+        font-size: 120;
+        font-family: Hotline;
+		width: auto;
+		height: 120px;
+        margin-top: 200px;
+        margin-left: 18%;
+        z-index: 10;
 	}
     </style>
 </head>
-<body>
-    <div id="muffler"></div>
-        <div id="bgvideo"><iframe width="100%" height="100%" src="http://www.youtube.com/embed/RDfjXj5EGqI?controls=0;showinfo=0;disablekb=0;iv_load_policy=3;wmode=transparent;autoplay=1;rel=0" frameborder="0" allowfullscreen></iframe></div>
-		<h1><span class="test">Hello</span></h1>
-		<button class="button">LentoRU</button>
-	<br>
-		<div id="vk_groups"></div>
+<body class="bg">
+        <h1><span class="test"></span></h1>
+        <audio id="sound" src="sound/1.mp3" autoplay></audio>
+        <div id="bg_city" class="city"></div>
+        <div id="bg_fon" class="fon"></div>
 </body>
-<!-- VK Widget -->
-	<script type="text/javascript">
-	VK.Widgets.Group("vk_groups", {mode: 2, wide: 1, width: "600", height: "800"}, 94909892);
-	</script>
 	<script>
-	var words = ["How are you?", "beautiful fireplace?", "OK", "LOL", "What?", "Soon a new website", "happy new year", "Fallout 4", "fire...", ":D"];
+    var i = 0;
+    document.getElementById("sound").volume = 0.5;
+    $('.fon').pan({fps: 60, speed: 10, dir: 'left'});
+    $('.city').pan({fps: 60, speed: 2, dir: 'left'});
+	var words = ["я по тебе скучаю", "это для тебя", "он тебя любит", "как Москва?", "Прости пожалуйста", "я не специально", "С днем рожденья", ":D"];
 		$test = $(".test");
-		
-	function getRandom(min, max) {
-		return Math.floor(Math.random() * (max - min)) + min;
-	}
-	
-	function getRandomWord () {
-		var num = getRandom(0, words.length - 1);
-		return words[num];
-	}
+        rgbstr = "";
 //AWOLNATION - run
-	function change () {
-		$test.fadeOut(3000, function () {
-		$test.text(getRandomWord());
-		$test.fadeIn(3000);
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    function getWord(){
+        $test.text(words[i]);
+        i++;
+    }
+    function fWords() {
+		$test.fadeOut(4000, function () {
+            getWord();
+		$test.fadeIn(4000);
 	});
-	setTimeout(change, 6000);
-	}
-    $(".button").click(function () {
-		$('#vk_groups').fadeToggle(4000);
-    });
-	$test.html(getRandomWord());
-	change();
+	    setTimeout(fWords, 8000);
+    }
+    /*function bgfon() {
+        $(".bg").animate({ backgroundColor: rgbstr}, 8000);
+        setTimeout(bgfon, 8000);
+    }
+    rgbstr = rgbToHex(getRandomInt(0,255),getRandomInt(0,255),getRandomInt(0,255));
+    bgfon();*/
+    fWords();
 </script>
 </html>
