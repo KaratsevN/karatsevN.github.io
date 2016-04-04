@@ -1,108 +1,65 @@
 <html>
-<head>
-    <meta charset="utf-8">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="jquery.spritely.js"></script>
-	<style>
-    @font-face {
-        font-family: Hotline;
-        src: url(fonts/HM.ttf);
-    }
-	html, body {
-        background-color: #B26585;
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-	}
-    #bg_city{
-        background: transparent url(images/city.png) 0 0px repeat-x;
-    }
-    #bg_fon{
-        background: transparent url(images/palm.png) 0 104px repeat-x;
-    }
-    .fon{
-        position: absolute;
-        top: 20%;
-        left: -10%;
-        width: 120%;
-        height: 450px;
-        animation: fon 10s infinite ease-in-out;
-    }
-    .city{
-        position: absolute;
-        left: -10%;
-        width: 120%;
-        height: 450px;
-        animation: fon 10s infinite ease-in-out;
-    }
-    @keyframes fon {
-        33% { transform: rotate(2deg);}
-        
-        66% { transform: rotate(-2deg);}
-
-        99% { transform: rotate(0deg);}
-        
-    }
-	.test {
-        color: 	#6666FF;
-        position: absolute;
-        letter-spacing: 15px;
-        font-size: 120;
-        font-family: Hotline;
-		width: auto;
-		height: 120px;
-        margin-top: 200px;
-        margin-left: 18%;
-        z-index: 10;
-	}
-    </style>
-</head>
-<body class="bg">
-        <h1><span class="test"></span></h1>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The Matrix</title>
+    <link href="css/style.css" rel="stylesheet">    
+    </head>
+    
+    <body>
         <audio id="sound" src="sound/1.mp3" autoplay></audio>
-        <div id="bg_city" class="city"></div>
-        <div id="bg_fon" class="fon"></div>
-</body>
-	<script>
-    var i = 0;
-    document.getElementById("sound").volume = 0.5;
-    $('.fon').pan({fps: 60, speed: 10, dir: 'left'});
-    $('.city').pan({fps: 60, speed: 2, dir: 'left'});
-	var words = ["я по тебе скучаю", "это для тебя", "он тебя любит", "как Москва?", "Прости пожалуйста", "я не специально", "С днем рожденья", ":D"];
-		$test = $(".test");
-        rgbstr = "";
-//AWOLNATION - run
-    function componentToHex(c) {
-        var hex = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
-    }
+        <canvas id="c"></canvas>
+        <script type="text/javascript">
+//код НЕ мой, спиздил у кого-то... В ближайшее время переделаю, а пока так
+var c = document.getElementById("c");
+var ctx = c.getContext("2d");
 
-    function rgbToHex(r, g, b) {
-        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-    }
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
-    function getWord(){
-        $test.text(words[i]);
-        i++;
-    }
-    function fWords() {
-		$test.fadeOut(4000, function () {
-            getWord();
-		$test.fadeIn(4000);
-	});
-	    setTimeout(fWords, 8000);
-    }
-    /*function bgfon() {
-        $(".bg").animate({ backgroundColor: rgbstr}, 8000);
-        setTimeout(bgfon, 8000);
-    }
-    rgbstr = rgbToHex(getRandomInt(0,255),getRandomInt(0,255),getRandomInt(0,255));
-    bgfon();*/
-    fWords();
-</script>
+//making the canvas full screen
+c.height = window.innerHeight;
+c.width = window.innerWidth;
+
+//chinese characters - taken from the unicode charset
+var chinese = "田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑QWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+1234567890";
+//converting the string into an array of single characters
+chinese = chinese.split("");
+
+var font_size = 20;
+var columns = c.width/font_size; //number of columns for the rain
+//an array of drops - one per column
+var drops = [];
+//x below is the x coordinate
+//1 = y co-ordinate of the drop(same for every drop initially)
+for(var x = 0; x < columns; x++)
+	drops[x] = 1; 
+
+//drawing the characters
+function draw()
+{
+	//Black BG for the canvas
+	//translucent BG to show trail
+	ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+	ctx.fillRect(0, 0, c.width, c.height);
+	
+	ctx.fillStyle = "#0F0"; //green text #0F0
+	ctx.font = font_size + "px arial";
+	//looping over drops
+	for(var i = 0; i < drops.length; i++)
+	{
+		//a random chinese character to print
+		var text = chinese[Math.floor(Math.random()*chinese.length)];
+		//x = i*font_size, y = value of drops[i]*font_size
+		ctx.fillText(text, i*font_size, drops[i]*font_size);
+		
+		//sending the drop back to the top randomly after it has crossed the screen
+		//adding a randomness to the reset to make the drops scattered on the Y axis
+		if(drops[i]*font_size > c.height && Math.random() > 0.975)
+			drops[i] = 0;
+		
+		//incrementing Y coordinate
+		drops[i]++;
+	}
+}
+
+setInterval(draw,38);
+        </script>
+    </body>
 </html>
